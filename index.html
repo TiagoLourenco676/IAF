@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Tempo de Auditoria ISO 9001 (IAF MD 5)</title>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --background-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-color: #dddddd;
+            --success-color: #28a745;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 5px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #eee;
+        }
+
+        .checkbox-item input {
+            margin-right: 10px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            margin-bottom: 0;
+            font-weight: normal;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .result-card {
+            background-color: #e9f5ff;
+            border-left: 5px solid var(--primary-color);
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .result-value {
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+
+        .result-details {
+            font-size: 14px;
+            color: #555;
+            background: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+            margin-top: 15px;
+        }
+
+        .details-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .total-row {
+            font-weight: bold;
+            border-top: 1px solid #ddd;
+            padding-top: 5px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Calculadora de Tempo de Auditoria</h1>
+        <p class="subtitle">Baseado nas diretrizes do IAF MD 5 (ISO 9001)</p>
+
+        <h2 class="section-title">1. Informações Base</h2>
+        <div class="form-group">
+            <label for="employees">Número de Funcionários Efetivos:</label>
+            <input type="number" id="employees" min="1" value="50">
+        </div>
+        <div class="form-group">
+            <label for="auditType">Tipo de Auditoria:</label>
+            <select id="auditType">
+                <option value="1">Certificação Inicial (100%)</option>
+                <option value="0.3333">Supervisão / Manutenção (~33%)</option>
+                <option value="0.6666">Recertificação (~66%)</option>
+            </select>
+        </div>
+
+        <h2 class="section-title">2. Fatores de Aumento (Complexidade e Risco)</h2>
+        <div class="checkbox-group">
+            <div class="checkbox-item">
+                <input type="checkbox" id="inc1" value="0.20" class="increase">
+                <label for="inc1">Alta complexidade do processo / Risco Elevado (+20%)</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="inc2" value="0.10" class="increase">
+                <label for="inc2">Operação em múltiplos turnos (+10%)</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="inc3" value="0.10" class="increase">
+                <label for="inc3">Logística complexa / Filiais não amostradas (+10%)</label>
+            </div>
+        </div>
+
+        <h2 class="section-title">3. Fatores de Redução (Justificáveis)</h2>
+        <div class="checkbox-group">
+            <div class="checkbox-item">
+                <input type="checkbox" id="dec1" value="0.20" class="decrease">
+                <label for="dec1">Baixa complexidade / Risco Baixo (-20%)</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="dec2" value="0.10" class="decrease">
+                <label for="dec2">Processos altamente automatizados (-10%)</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="dec3" value="0.10" class="decrease">
+                <label for="dec3">Conhecimento prévio do sistema de gestão (-10%)</label>
+            </div>
+        </div>
+
+        <div class="result-card">
+            <h3>Tempo Calculado de Auditoria</h3>
+            <div class="result-value" id="finalDays">0.0</div>
+            <div>Dias de Auditor (Auditor-Days)</div>
+            
+            <div class="result-details">
+                <div class="details-row">
+                    <span>Tempo Base (Tabela QMS 1):</span>
+                    <span id="detailBase">0.0 dias</span>
+                </div>
+                <div class="details-row">
+                    <span>Acréscimos Totais:</span>
+                    <span id="detailInc">+0%</span>
+                </div>
+                <div class="details-row">
+                    <span>Reduções Totais (Máx 30%):</span>
+                    <span id="detailDec">-0%</span>
+                </div>
+                <div class="details-row total-row">
+                    <span>Tempo Inicial Ajustado:</span>
+                    <span id="detailAdjusted">0.0 dias</span>
+                </div>
+                <div class="details-row">
+                    <span id="detailTypeLabel">Proporção (Certificação Inicial):</span>
+                    <span id="detailMultiplier">x 1.00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tabela QMS 1 do IAF MD 5
+        function getBaseTime(employees) {
+            if (employees <= 0 || isNaN(employees)) return 0;
+            if (employees <= 5) return 1.5;
+            if (employees <= 10) return 2.0;
+            if (employees <= 15) return 2.5;
+            if (employees <= 25) return 3.0;
+            if (employees <= 45) return 4.0;
+            if (employees <= 65) return 5.0;
+            if (employees <= 85) return 6.0;
+            if (employees <= 125) return 7.0;
+            if (employees <= 175) return 8.0;
+            if (employees <= 275) return 9.0;
+            if (employees <= 425) return 10.0;
+            if (employees <= 625) return 11.0;
+            if (employees <= 875) return 12.0;
+            if (employees <= 1175) return 13.0;
+            if (employees <= 1550) return 14.0;
+            if (employees <= 2025) return 15.0;
+            return 16.0; // Acima de 2025 (simplificado para fins desta calculadora)
+        }
+
+        function calculateAuditTime() {
+            // 1. Obter Valores Base
+            const employees = parseInt(document.getElementById('employees').value, 10);
+            const auditTypeSelect = document.getElementById('auditType');
+            const auditTypeMultiplier = parseFloat(auditTypeSelect.value);
+            const auditTypeLabel = auditTypeSelect.options[auditTypeSelect.selectedIndex].text;
+
+            const baseTime = getBaseTime(employees);
+
+            // 2. Calcular Fatores de Aumento
+            let increaseSum = 0;
+            document.querySelectorAll('.increase:checked').forEach(cb => {
+                increaseSum += parseFloat(cb.value);
+            });
+
+            // 3. Calcular Fatores de Redução (A regra do IAF MD5 limita a redução a no máximo 30%)
+            let decreaseSum = 0;
+            document.querySelectorAll('.decrease:checked').forEach(cb => {
+                decreaseSum += parseFloat(cb.value);
+            });
+            const maxAllowedDecrease = Math.min(decreaseSum, 0.30); // Teto de 30%
+
+            // 4. Calcular Modificador Total e Tempo Ajustado
+            const netModifier = increaseSum - maxAllowedDecrease;
+            const adjustedTime = baseTime * (1 + netModifier);
+
+            // 5. Aplicar proporção do Tipo de Auditoria
+            const finalTime = adjustedTime * auditTypeMultiplier;
+
+            // 6. Atualizar a Interface (Arredondamento para 1 casa decimal como é padrão)
+            document.getElementById('finalDays').innerText = finalTime.toFixed(1);
+            
+            // Atualizar Detalhes
+            document.getElementById('detailBase').innerText = baseTime.toFixed(1) + ' dias';
+            document.getElementById('detailInc').innerText = '+' + Math.round(increaseSum * 100) + '%';
+            document.getElementById('detailDec').innerText = '-' + Math.round(maxAllowedDecrease * 100) + '%';
+            document.getElementById('detailAdjusted').innerText = adjustedTime.toFixed(1) + ' dias';
+            
+            let labelType = "Proporção (Certificação Inicial):";
+            if(auditTypeMultiplier < 0.5) labelType = "Proporção (Supervisão):";
+            else if(auditTypeMultiplier < 0.9) labelType = "Proporção (Recertificação):";
+            
+            document.getElementById('detailTypeLabel').innerText = labelType;
+            document.getElementById('detailMultiplier').innerText = 'x ' + auditTypeMultiplier.toFixed(2);
+        }
+
+        // Adicionar Event Listeners para atualizar automaticamente ao interagir
+        document.getElementById('employees').addEventListener('input', calculateAuditTime);
+        document.getElementById('auditType').addEventListener('change', calculateAuditTime);
+        
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', calculateAuditTime);
+        });
+
+        // Calcular estado inicial
+        calculateAuditTime();
+    </script>
+</body>
+</html>
